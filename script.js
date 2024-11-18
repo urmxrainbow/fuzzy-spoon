@@ -57,12 +57,13 @@ submitButton.addEventListener('click', () => {
     // Concatenate all values from the input fields
     const pin = Array.from(pinInputs).map((input) => input.value).join('');
 
+    
     // Check if the PIN is correct
     if (pin === correctPin) {
         // Redirect to the success page
         window.location.href = "success.html";
     } else {
-        alert('not correct ');
+        alert('Not correct 😝 hiti is " Me + ? = 💘 "');
     }
 });
 
