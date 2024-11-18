@@ -21,7 +21,7 @@ keys.forEach((key) => {
     });
 });
 
-// Handle the delete button
+// Handle the delete button (delete one number at a time)
 deleteButton.addEventListener('click', () => {
     if (currentInputIndex > 0) {
         currentInputIndex--; // Move back to the previous input
@@ -29,46 +29,63 @@ deleteButton.addEventListener('click', () => {
     }
 });
 
-// Allow continuous deletion on long press
-let deleteInterval; // Interval ID for repeated deletion
+// Allow continuous deletion on long press (optional)
+let deleteInterval;
 
+function deleteOneDigit() {
+    if (currentInputIndex > 0) {
+        currentInputIndex--; // Move back to the previous input
+    }
+}
+
+// Handle single click delete
+deleteButton.addEventListener('click', deleteOneDigit);
+
+// Handle continuous deletion on long press
 deleteButton.addEventListener('mousedown', () => {
-    deleteInterval = setInterval(() => {
-        if (currentInputIndex > 0) {
-            currentInputIndex--; // Move back to the previous input
-            pinInputs[currentInputIndex].value = ''; // Clear the current input field
-        } else {
-            clearInterval(deleteInterval); // Stop deleting if all inputs are cleared
-        }
-    }, 100); // Repeat every 100ms
+    deleteInterval = setInterval(deleteOneDigit, 100); // Delete every 100ms
 });
 
 deleteButton.addEventListener('mouseup', () => {
+    clearInterval(deleteInterval); // Stop deletion on button release
+});
+
+deleteButton.addEventListener('mouseleave', () => {
+    clearInterval(deleteInterval); // Stop deletion if the mouse leaves the button
+});
+
+
+
+/*deleteButton.addEventListener('mouseup', () => {
     clearInterval(deleteInterval); // Stop deleting when the button is released
 });
 
 deleteButton.addEventListener('mouseleave', () => {
     clearInterval(deleteInterval); // Stop deleting if the mouse leaves the button
-});
-
+}); */
 
 // Handle PIN submission
 submitButton.addEventListener('click', () => {
     // Concatenate all values from the input fields
     const pin = Array.from(pinInputs).map((input) => input.value).join('');
 
-    
     // Check if the PIN is correct
     if (pin === correctPin) {
         // Redirect to the success page
-        window.location.href = "success.html";
+        window.location.href = "oo.html";
     } else {
-        alert('Not correct 😝 hiti is " Me + ? = 💘 "');
+        alert('Not correct 😝 hint is "Me + ? = 💘"');
+        clearAllInputs(); // Clear all inputs when incorrect
     }
 });
 
+// Function to clear all input fields
+function clearAllInputs() {
+    pinInputs.forEach((input) => (input.value = '')); // Clear all input fields
+    currentInputIndex = 0; // Reset index
+}
+
 // Optional: Clear all inputs on page load
 document.addEventListener('DOMContentLoaded', () => {
-    pinInputs.forEach((input) => (input.value = ''));
-    currentInputIndex = 0; // Reset index on page load
+    clearAllInputs(); // Ensure fields are empty on page load
 });
